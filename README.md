@@ -30,3 +30,9 @@ Pimentel-Alarcón D, Balzano L, Marcia R, et al. "Group-sparse subspace clusteri
 E. Elhamifar and R. Vidal, "Sparse Subspace Clustering: Algorithm, Theory, and Applications", IEEE Transactions on Pattern Analysis and Machine Intelligence (TPAMI), 2013.
 
 Code: http://www.ccs.neu.edu/home/eelhami/codes/SSC_ADMM_v1.1.zip
+
+## LRR
+
+Liu G, Lin Z, Yan S, et al. "Robust recovery of subspace structures by low-rank representation". IEEE transactions on pattern analysis and machine intelligence, 2012, 35(1): 171-184.
+
+https://zhouchenlin.github.io/lrr%28motion_face%29.zip
