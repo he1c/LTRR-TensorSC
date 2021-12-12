@@ -31,8 +31,14 @@ E. Elhamifar and R. Vidal, "Sparse Subspace Clustering: Algorithm, Theory, and A
 
 Code: http://www.ccs.neu.edu/home/eelhami/codes/SSC_ADMM_v1.1.zip
 
-## LRR
+### LRR
 
 Liu G, Lin Z, Yan S, et al. "Robust recovery of subspace structures by low-rank representation". IEEE transactions on pattern analysis and machine intelligence, 2012, 35(1): 171-184.
 
 https://zhouchenlin.github.io/lrr%28motion_face%29.zip
+
+
+## Tensor ring completion
+The tensor ring completion function PTRC.m is written following the algorithm in
+
+Yu, Jinshi, Guoxu Zhou, Chao Li, Qibin Zhao, and Shengli Xie. "Low tensor-ring rank completion by parallel matrix factorization." IEEE transactions on neural networks and learning systems (2020).
