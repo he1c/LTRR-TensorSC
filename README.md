@@ -21,9 +21,11 @@ Code: https://github.com/sjtrny/OSC
 
 Yang, C.; Robinson, D.; and Vidal, R. 2015. "Sparse subspace clustering with missing entries". International Conference on Machine Learning, 2463–2472.
 
-Code of SSC_EWZF: https://danielpimentel.github.io/code/GSSC.zip from GSSC paper:
+Code of SSC-PZF is from the GSSC paper: 
 
 Pimentel-Alarcón D, Balzano L, Marcia R, et al. "Group-sparse subspace clustering with missing data" 2016 IEEE Statistical Signal Processing Workshop (SSP). IEEE, 2016: 1-5.
+
+SSC_EWZF.m in: https://danielpimentel.github.io/code/GSSC.zip
 
 ### SSC
 
