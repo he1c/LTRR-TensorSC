@@ -27,6 +27,8 @@ Pimentel-Alarcón D, Balzano L, Marcia R, et al. "Group-sparse subspace clusteri
 
 SSC_EWZF.m in: https://danielpimentel.github.io/code/GSSC.zip
 
+Runing this function require CVX software from http://cvxr.com/cvx/download/
+
 ### SSC
 
 E. Elhamifar and R. Vidal, "Sparse Subspace Clustering: Algorithm, Theory, and Applications", IEEE Transactions on Pattern Analysis and Machine Intelligence (TPAMI), 2013.
