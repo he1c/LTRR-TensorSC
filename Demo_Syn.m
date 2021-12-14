@@ -49,27 +49,27 @@ fprintf('Done\n');
 %% ================No completion================
 %% MMTSC-4
 option.d=[2,2,2,2];
-option.view=[1,2,3,4];
+option.l=[1,2,3,4];
 option.lambda=0.4;
-[C_t,~]=MMTSC(MissM_t,Mask_t,option,Gstar);
+[C_t,~]=MMTSC(MissM_t,Mask_t,option);
 GG=sum(abs(C_t),3);
 C_MMTSC_4 = SpectralClustering(GG+GG'-2*diag(diag(GG)),n_cluster);
 fprintf('MMTSC-4 acc:%.4f\n',evalAccuracy(Gstar,C_MMTSC_4));
 
 %% MMTSC-2
 option.d=[2,2];
-option.view=[1,2];
+option.l=[1,2];
 option.lambda=0.2;
-[C_t,~]=MMTSC(MissM_t,Mask_t,option,Gstar);
+[C_t,~]=MMTSC(MissM_t,Mask_t,option);
 GG=sum(abs(C_t),3);
 C_MMTSC_2 = SpectralClustering(GG+GG'-2*diag(diag(GG)),n_cluster);
 fprintf('MMTSC-2 acc:%.4f\n',evalAccuracy(Gstar,C_MMTSC_2));
 
 %% MMTSC-1
 option.d=2;
-option.view=1;
+option.l=1;
 option.lambda=0.1;
-[C_t,~]=MMTSC(MissM_t,Mask_t,option,Gstar);
+[C_t,~]=MMTSC(MissM_t,Mask_t,option);
 GG=sum(abs(C_t),3);
 C_MMTSC_1 = SpectralClustering(GG+GG'-2*diag(diag(GG)),n_cluster);
 fprintf('MMTSC-1 acc:%.4f\n',evalAccuracy(Gstar,C_MMTSC_1));
@@ -78,7 +78,7 @@ fprintf('MMTSC-1 acc:%.4f\n',evalAccuracy(Gstar,C_MMTSC_1));
 X_temp=reshape(MissM_t,prod(n_t(1:N-1)),[]);
 params = [1e-4,1e+3,.1];   
 cr=30;
-[~,C_temp] = SSC_EWZF(X_temp,n_cluster,cr,params);
+[~,~,C_temp] = SSC_EWZF(X_temp,n_cluster,cr,params); %modify original function to->[Ghat,Uhat,C] = SSC_EWZF(XO,K,r,params)
 C_SSC_PZF= SpectralClustering(abs(C_temp)+abs(C_temp')-2*abs(diag(diag(C_temp))),n_cluster);
 fprintf('SSC-PZF acc:%.4f\n',evalAccuracy(Gstar,C_SSC_PZF));
 
@@ -100,18 +100,18 @@ I_hat=PTRC(MissM_t,Mask_t,[],optiontc);
 
 %% MMTSC-2+TC
 option.d=[2,2];
-option.view=[1,2];
+option.l=[1,2];
 option.lambda=0.2;
-[C_t,~]=MMTSC(I_hat,Mask_t>-1,option,Gstar);
+[C_t,~]=MMTSC(I_hat,Mask_t>-1,option);
 GG=sum(abs(C_t),3);
 C_MMTSC_2_TC = SpectralClustering(GG+GG'-2*diag(diag(GG)),n_cluster);
 fprintf('MMTSC-2+TC acc:%.4f\n',evalAccuracy(Gstar,C_MMTSC_2_TC));
 
 %% MMTSC-1+TC
 option.d=2;
-option.view=1;
+option.l=1;
 option.lambda=0.1;
-[C_t,~]=MMTSC(I_hat,Mask_t>-1,option,Gstar);
+[C_t,~]=MMTSC(I_hat,Mask_t>-1,option);
 GG=sum(abs(C_t),3);
 C_MMTSC_1_TC = SpectralClustering(GG+GG'-2*diag(diag(GG)),n_cluster);
 fprintf('MMTSC-1+TC acc:%.4f\n',evalAccuracy(Gstar,C_MMTSC_1_TC));
@@ -124,7 +124,7 @@ C_SSC_TC = SpectralClustering(abs(C_temp)+abs(C_temp')-2*abs(diag(diag(C_temp)))
 fprintf('SSC+TC acc:%.4f\n',evalAccuracy(Gstar,C_SSC_TC));
 
 %% LRR+TC
-[~,C_temp]=LRR(X_temp,Gstar,1.5);
+C_temp=solve_lrr(X_temp,1.5);
 C_temp(isnan(C_temp))=0;
 C_LRR_TC = SpectralClustering(abs(C_temp)+abs(C_temp')-2*abs(diag(diag(C_temp))),n_cluster);
 fprintf('LRR+TC acc:%.4f\n',evalAccuracy(Gstar,C_LRR_TC));

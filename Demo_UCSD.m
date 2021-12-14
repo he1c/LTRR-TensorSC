@@ -1,5 +1,8 @@
-clear all;
+%% Code for real data experiment: UCSD
+%--The UCSD dataset can be downloaded from: http://www.svcl.ucsd.edu/projects/background_subtraction/JPEGS.tar.gz
+%--Please extract the data and place in the data folder.
 
+clear all;
 addpath(genpath(pwd))
 
 n_cluster=10;
@@ -15,7 +18,7 @@ for m = 1:n_cluster         % forming the data
     % selected_classes(m)
     frame_num=min(video_framenum(selected_classes(m)),50);
     for kk=1:1:frame_num
-        Image=imread(['UCSD\' video_name{selected_classes(m)} '\frame_' num2str(kk) '.jpg']);
+        Image=imread(['data\UCSD\' video_name{selected_classes(m)} '\frame_' num2str(kk) '.jpg']);
         Image_s=imresize(Image,[36 56]);
         X=[X Image_s(:)];
     end
@@ -53,18 +56,18 @@ MissM_t=X_t.*Mask_t;
 %% ============No completion================
 %% MMTSC-2
 option.d=[3,3];
-option.view=[1,2];
+option.l=[1,2];
 option.lambda=0.2;
-[C_t,~]=MMTSC(MissM_t,Mask_t,option,Gstar);
+[C_t,~]=MMTSC(MissM_t,Mask_t,option);
 GG=double(sum(abs(C_t),3));
 C_MMTSC_2 = SpectralClustering(GG+GG'-2*diag(diag(GG)),n_cluster);
 fprintf('MMTSC-2 acc:%.4f\n',evalAccuracy(Gstar,C_MMTSC_2));
 
 %% MMTSC-1
 option.d=3;
-option.view=1;
+option.l=1;
 option.lambda=0.1;
-[C_t,~]=MMTSC(MissM_t,Mask_t,option,Gstar);
+[C_t,~]=MMTSC(MissM_t,Mask_t,option);
 GG=double(sum(abs(C_t),3));
 C_MMTSC_1 = SpectralClustering(GG+GG'-2*diag(diag(GG)),n_cluster);
 fprintf('MMTSC-1 acc:%.4f\n',evalAccuracy(Gstar,C_MMTSC_1));
@@ -73,7 +76,7 @@ fprintf('MMTSC-1 acc:%.4f\n',evalAccuracy(Gstar,C_MMTSC_1));
 X_temp=reshape(MissM_t,prod(n_t(1:N-1)),[]);
 params = [1e-4,1e+3,.1];   %SSC_EWZF
 cr=50;
-[~,C_temp] = SSC_EWZF(X_temp,n_cluster,cr,params);
+[~,~,C_temp] = SSC_EWZF(X_temp,n_cluster,cr,params);
 C_SSC_PZF= SpectralClustering(abs(C_temp)+abs(C_temp')-2*abs(diag(diag(C_temp))),n_cluster);
 fprintf('SSC-PZF acc:%.4f\n',evalAccuracy(Gstar,C_SSC_PZF));
 
@@ -95,18 +98,18 @@ I_hat=PTRC(MissM_t,Mask_t,[],optiontc);
 
 %% MMTSC-2+TC
 option.d=[3,3];
-option.view=[1,2];
+option.l=[1,2];
 option.lambda=0.2;
-[C_t,~]=MMTSC(I_hat,Mask_t>-1,option,Gstar);
+[C_t,~]=MMTSC(I_hat,Mask_t>-1,option);
 GG=double(sum(abs(C_t),3));
 C_MMTSC_2_TC = SpectralClustering(GG+GG'-2*diag(diag(GG)),n_cluster);
 fprintf('MMTSC-2+TC acc:%.4f\n',evalAccuracy(Gstar,C_MMTSC_2_TC));
 
 %% MMTSC-1+TC
 option.d=3;
-option.view=1;
+option.l=1;
 option.lambda=0.1;
-[C_t,~]=MMTSC(I_hat,Mask_t>-1,option,Gstar);
+[C_t,~]=MMTSC(I_hat,Mask_t>-1,option);
 GG=double(sum(abs(C_t),3));
 C_MMTSC_1_TC = SpectralClustering(GG+GG'-2*diag(diag(GG)),n_cluster);
 fprintf('MMTSC-1+TC acc:%.4f\n',evalAccuracy(Gstar,C_MMTSC_1_TC));
@@ -118,7 +121,7 @@ C_SSC_TC = SpectralClustering(abs(C_temp)+abs(C_temp'),n_cluster);
 fprintf('SSC+TC acc:%.4f\n',evalAccuracy(Gstar,C_SSC_TC));
 
 %% LRR+TC
-[~,C_temp]=LRR(X_temp,Gstar,1.5);
+C_temp=solve_lrr(X_temp,1.5);
 C_LRR_TC= SpectralClustering(abs(C_temp)+abs(C_temp')-2*abs(diag(diag(C_temp))),n_cluster);
 
 %% OSC+TC
@@ -142,11 +145,11 @@ max_iter=800;
 DEBUG = 0; 
 [Z,tlrr_E,Z_rank,err_va ] = Tensor_LRR(X_TLRR,LL,max_iter,DEBUG);
 Z=tprod(V,Z); 
-[~,C_TSVDLRR_TC] = ncut_clustering(Z, Gstar',0.01);
+[~,C_TSVDLRR_TC] = ncut_clustering(Z, Gstar',0.01); % modify the function to [mean_nmi,grps] = ncut_clustering(Z, labels,t )
 fprintf('TSVD-TLRR+TC acc:%.4f\n',evalAccuracy(Gstar,C_TSVDLRR_TC));
       
 
-
+ 
 
 
 
